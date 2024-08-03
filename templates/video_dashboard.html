@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Video Dashboard{% endblock %}
+
+{% block extra_styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/video-dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-dashboard-container">
+    <h1 class="video-dashboard-title">Video Dashboard</h1>
+    <li><a href="{% url 'upload_video' %}">Upload Video</a></li>
+    <ul class="video-dashboard">
+        {% for video in videos %}
+            <li class="video-dashboard-item">
+                <h2 class="video-dashboard-item-title">{{ video.title }}</h2>
+                {% if video.video_file %}
+                    <video controls>
+                        <source src="{{ video.video_file.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <p>No video available.</p>
+                {% endif %}
+                <a href="{% url 'video_detail' video.id %}">Watch</a>
+                <p>Views: {{ video.views_count }}</p>
+                <p>Likes: {{ video.likes_count }}</p>
+                <p>Liked by:
+                    {% if video.liked_by_users %}
+                        <ul class="likes-list">
+                            {% for user in video.liked_by_users %}
+                                <li>{{ user.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No likes yet.</p>
+                    {% endif %}
+                </p>
+            </li>
+        {% empty %}
+            <li class="empty-message">No videos available.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

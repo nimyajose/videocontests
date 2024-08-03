@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Video Detail{% endblock %}
+
+{% block extra_styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/video-detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-detail-container">
+    <h2 class="video-detail-title">{{ video.title }}</h2>
+    <p class="video-detail-description">{{ video.description }}</p>
+    <video class="video-detail-video" controls>
+        <source src="{{ video.video_file.url }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <p class="video-detail-stats">Views: {{ video.views_count }} | Likes: {{ video.likes_count }}</p>
+
+    <form class="video-detail-form" method="post" action="{% url 'like_video' video.id %}">
+        {% csrf_token %}
+        <button type="submit">Like</button>
+    </form>
+
+    {% if messages %}
+        <ul class="video-detail-messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

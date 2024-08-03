@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Video{% endblock %}
+
+{% block extra_styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/upload-video.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="upload-video-container">
+    <h2 class="upload-video-title">Upload Video</h2>
+    <form class="upload-video-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+</div>
+{% endblock %}

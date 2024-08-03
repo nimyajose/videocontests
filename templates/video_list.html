@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Video List{% endblock %}
+
+{% block extra_styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/video-list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-list-container">
+    <h2 class="video-list-title">Available Videos</h2>
+    <ul class="video-list">
+        {% for video in videos %}
+        <li class="video-item">
+            <h3 class="video-item-title">{{ video.title }}</h3>
+            <p class="video-item-description">{{ video.description }}</p>
+            {% if video.video_file %}
+                <video controls>
+                    <source src="{{ video.video_file.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% else %}
+                <p>No video available.</p>
+            {% endif %}
+            <a href="{% url 'video_detail' video.id %}">Watch</a>
+        </li>
+        {% empty %}
+        <li class="empty-message">No videos available.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
